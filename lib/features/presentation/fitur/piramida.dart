@@ -14,6 +14,7 @@ class _PiramidaState extends State<Piramida> {
   final _tinggiController = TextEditingController();
   double _volume = 0.0;
   double _keliling = 0.0;
+  bool _hasCalculated = false; // Tambahkan flag untuk tracking perhitungan
 
   @override
   void dispose() {
@@ -32,10 +33,12 @@ class _PiramidaState extends State<Piramida> {
       double tinggi = double.tryParse(_tinggiController.text) ?? 0;
 
       if (panjang > 0 && lebar > 0 && tinggi > 0) {
-        setState(() {
-          _volume = (1 / 3) * panjang * lebar * tinggi;
-        });
+        _volume = (1 / 3) * panjang * lebar * tinggi;
+      } else {
+        _volume = 0.0;
       }
+    } else {
+      _volume = 0.0;
     }
   }
 
@@ -46,24 +49,31 @@ class _PiramidaState extends State<Piramida> {
       double lebar = double.tryParse(_lebarController.text) ?? 0;
 
       if (panjang > 0 && lebar > 0) {
-        setState(() {
-          _keliling = 2 * (panjang + lebar);
-        });
+        _keliling = 2 * (panjang + lebar);
+      } else {
+        _keliling = 0.0;
       }
+    } else {
+      _keliling = 0.0;
     }
   }
 
   void _hitungSemua() {
-    print('Tombol hitung ditekan!'); // Debug print
+    print('Tombol hitung ditekan!');
     print('Panjang: ${_panjangController.text}');
     print('Lebar: ${_lebarController.text}');
     print('Tinggi: ${_tinggiController.text}');
-    
+
     _hitungVolume();
     _hitungKeliling();
-    
+
+    setState(() {
+      _hasCalculated = true; // Set flag bahwa sudah melakukan perhitungan
+    });
+
     print('Volume hasil: $_volume');
     print('Keliling hasil: $_keliling');
+    print('Has calculated: $_hasCalculated');
   }
 
   void _reset() {
@@ -73,6 +83,7 @@ class _PiramidaState extends State<Piramida> {
       _tinggiController.clear();
       _volume = 0.0;
       _keliling = 0.0;
+      _hasCalculated = false; // Reset flag
     });
   }
 
@@ -90,9 +101,7 @@ class _PiramidaState extends State<Piramida> {
         centerTitle: true,
       ),
       body: Container(
-        decoration: BoxDecoration(
-          color: Colors.blueGrey[300],
-        ),
+        decoration: BoxDecoration(color: Colors.blueGrey[300]),
         child: SafeArea(
           child: Padding(
             padding: const EdgeInsets.all(20.0),
@@ -125,7 +134,10 @@ class _PiramidaState extends State<Piramida> {
                       const SizedBox(height: 5),
                       Text(
                         'Hitung Volume & Keliling Alas',
-                        style: GoogleFonts.sora(fontSize: 14, color: Colors.grey),
+                        style: GoogleFonts.sora(
+                          fontSize: 14,
+                          color: Colors.grey,
+                        ),
                       ),
                     ],
                   ),
@@ -246,8 +258,8 @@ class _PiramidaState extends State<Piramida> {
                           ),
                           const SizedBox(height: 25),
 
-                          // Results
-                          if (_volume > 0 || _keliling > 0) ...[
+                          // Results - Ubah kondisi di sini
+                          if (_hasCalculated) ...[
                             Text(
                               'Hasil Perhitungan',
                               style: GoogleFonts.sora(
