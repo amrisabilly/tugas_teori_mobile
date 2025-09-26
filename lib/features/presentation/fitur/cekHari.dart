@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:go_router/go_router.dart';
 
 class CekHari extends StatefulWidget {
   const CekHari({super.key});
@@ -25,16 +26,16 @@ class _CekHariState extends State<CekHari> {
 
     if (_nomorController.text.isNotEmpty) {
       int nomor = int.tryParse(_nomorController.text) ?? 0;
-      
+
       if (nomor > 0) {
         // Gunakan modulus 7 untuk mendapatkan sisa bagi
         int hasilModulus = nomor % 7;
-        
+
         // Jika hasilnya 0, maka itu hari ke-7 (Minggu)
         if (hasilModulus == 0) {
           hasilModulus = 7;
         }
-        
+
         setState(() {
           switch (hasilModulus) {
             case 1:
@@ -64,7 +65,7 @@ class _CekHariState extends State<CekHari> {
           }
           _hasChecked = true;
         });
-        
+
         print('Angka input: $nomor');
         print('Hasil modulus 7: $hasilModulus');
       } else {
@@ -96,10 +97,13 @@ class _CekHariState extends State<CekHari> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'Cek Hari',
-          style: GoogleFonts.sora(fontSize: 22),
+        leading: IconButton(
+          onPressed: () {
+            context.go('/home');
+          },
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
         ),
+        title: Text('Cek Hari', style: GoogleFonts.sora(fontSize: 22)),
         backgroundColor: Colors.blueGrey[500],
         foregroundColor: Colors.white,
         elevation: 4,
@@ -185,7 +189,9 @@ class _CekHariState extends State<CekHari> {
                             decoration: BoxDecoration(
                               color: Colors.blue.withOpacity(0.1),
                               borderRadius: BorderRadius.circular(12),
-                              border: Border.all(color: Colors.blue.withOpacity(0.3)),
+                              border: Border.all(
+                                color: Colors.blue.withOpacity(0.3),
+                              ),
                             ),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -327,9 +333,15 @@ class _CekHariState extends State<CekHari> {
                             Container(
                               padding: const EdgeInsets.all(16),
                               decoration: BoxDecoration(
-                                color: _getColorByDay(_namaHari).withOpacity(0.1),
+                                color: _getColorByDay(
+                                  _namaHari,
+                                ).withOpacity(0.1),
                                 borderRadius: BorderRadius.circular(12),
-                                border: Border.all(color: _getColorByDay(_namaHari).withOpacity(0.3)),
+                                border: Border.all(
+                                  color: _getColorByDay(
+                                    _namaHari,
+                                  ).withOpacity(0.3),
+                                ),
                               ),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -340,14 +352,21 @@ class _CekHariState extends State<CekHari> {
                                         padding: const EdgeInsets.all(8),
                                         decoration: BoxDecoration(
                                           color: _getColorByDay(_namaHari),
-                                          borderRadius: BorderRadius.circular(8),
+                                          borderRadius: BorderRadius.circular(
+                                            8,
+                                          ),
                                         ),
-                                        child: const Icon(Icons.calendar_month, color: Colors.white, size: 24),
+                                        child: const Icon(
+                                          Icons.calendar_month,
+                                          color: Colors.white,
+                                          size: 24,
+                                        ),
                                       ),
                                       const SizedBox(width: 15),
                                       Expanded(
                                         child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Text(
                                               'Nama Hari',
@@ -363,7 +382,9 @@ class _CekHariState extends State<CekHari> {
                                               style: GoogleFonts.sora(
                                                 fontSize: 20,
                                                 fontWeight: FontWeight.bold,
-                                                color: _getColorByDay(_namaHari),
+                                                color: _getColorByDay(
+                                                  _namaHari,
+                                                ),
                                               ),
                                             ),
                                           ],
@@ -371,7 +392,9 @@ class _CekHariState extends State<CekHari> {
                                       ),
                                     ],
                                   ),
-                                  if (_nomorController.text.isNotEmpty && !_namaHari.contains('Masukkan') && !_namaHari.contains('Error')) ...[
+                                  if (_nomorController.text.isNotEmpty &&
+                                      !_namaHari.contains('Masukkan') &&
+                                      !_namaHari.contains('Error')) ...[
                                     const SizedBox(height: 12),
                                     Container(
                                       padding: const EdgeInsets.all(12),
@@ -380,7 +403,8 @@ class _CekHariState extends State<CekHari> {
                                         borderRadius: BorderRadius.circular(8),
                                       ),
                                       child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
                                           Text(
                                             'Perhitungan:',
@@ -445,10 +469,7 @@ class _CekHariState extends State<CekHari> {
           const SizedBox(width: 8),
           Text(
             '= $day',
-            style: GoogleFonts.sora(
-              fontSize: 13,
-              color: Colors.grey[700],
-            ),
+            style: GoogleFonts.sora(fontSize: 13, color: Colors.grey[700]),
           ),
         ],
       ),

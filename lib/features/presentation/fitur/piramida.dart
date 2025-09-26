@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:go_router/go_router.dart';
 
 class Piramida extends StatefulWidget {
   const Piramida({super.key});
@@ -91,6 +92,12 @@ class _PiramidaState extends State<Piramida> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          onPressed: () {
+            context.go('/home');
+          },
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+        ),
         title: Text(
           'Kalkulator Piramida',
           style: GoogleFonts.sora(fontSize: 22),

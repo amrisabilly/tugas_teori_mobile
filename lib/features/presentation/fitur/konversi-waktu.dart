@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:go_router/go_router.dart';
+
 
 class KonversiWaktu extends StatefulWidget {
   const KonversiWaktu({super.key});
@@ -94,6 +96,12 @@ class _KonversiWaktuState extends State<KonversiWaktu> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          onPressed: () {
+            context.go('/home');
+          },
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+        ),
         title: Text(
           'Konversi Waktu',
           style: GoogleFonts.sora(fontSize: 22),
